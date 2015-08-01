@@ -46,5 +46,5 @@ class IdManager(object):
                         "ID pool exhausted, max id is {0}".format(self.max_id)
                     )
 
-                self.next_available += 1
+                self.next_available += 100
                 return next_avail

@@ -47,13 +47,17 @@ struct Corruption {
   2: optional double correlation = 0,
 }
 
-struct Shaping {
+struct preShaping {
   1: i32 rate,
   2: optional Delay delay = {"delay": 0},
   3: optional Loss loss = {"percentage": 0},
   4: optional Reorder reorder = {"percentage": 0},
   5: optional Corruption corruption = {"percentage": 0},
   6: optional list<string> iptables_options,
+}
+
+struct Shaping {
+  1: list<preShaping> preItems,
 }
 
 struct TrafficControlSetting {

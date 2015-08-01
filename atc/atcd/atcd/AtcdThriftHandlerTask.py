@@ -266,7 +266,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         # blindly for eval
         names = [
             'TrafficControlledDevice', 'TrafficControl', 'Shaping',
-            'TrafficControlSetting', 'Loss', 'Delay', 'Corruption', 'Reorder'
+ 	    'preShaping', 'TrafficControlSetting', 'Loss', 'Delay', 'Corruption', 'Reorder'
         ]
         globals = {name: getattr(atc_thrift.ttypes, name) for name in names}
 
@@ -389,47 +389,61 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
             tc.device.controlledIP, {}
         ).get('tc')
 
-        tcrc = self._shape_interface(
-            new_id,
-            self.wan,
-            tc.device.controlledIP,
-            tc.settings.up,
-        )
-        if tcrc.code != ReturnCode.OK:
-            return tcrc
-        tcrc = self._shape_interface(
-            new_id,
-            self.lan,
-            tc.device.controlledIP,
-            tc.settings.down,
-        )
+	# start shaping for up way
+	for count, item in enumerate(tc.settings.up.preItems, start=1):
+		self.logger.info("up: start Shaping for item: {0}".format(item))
+        	tcrc = self._shape_interface(
+        	    new_id + count ,
+        	    self.wan,
+        	    tc.device.controlledIP,
+        	    item,
+        	)
+	        if tcrc.code != ReturnCode.OK:
+	            return tcrc
+
+	# start shaping for down way
+	for count, item in enumerate(tc.settings.down.preItems, start=1):
+		self.logger.info("down: start Shaping for item: {0}".format(item))
+        	tcrc = self._shape_interface(
+        	    new_id + count ,
+        	    self.lan,
+        	    tc.device.controlledIP,
+        	    item,
+        	)
         # If we failed to set shaping for LAN interfaces, we should remove
         # the shaping we just created for the WAN
-        if tcrc.code != ReturnCode.OK:
-            self._unshape_interface(
-                new_id,
-                self.wan,
-                tc.device.controlledIP,
-                tc.settings.up
-            )
-            return tcrc
+        	if tcrc.code != ReturnCode.OK:
+		    for count, item in enumerate(tc.settings.up.preItems, start=1):
+           		self._unshape_interface(
+            			old_id + count ,
+            			self.wan,
+            			tc.device.controlledIP,
+            			item,
+            		)
+        	    return tcrc
         self._add_mapping(new_id, tc)
         self.db_task.queue.put(((tc, tc.timeout + time.time()), 'add_shaping'))
         # if there were an existing id, remove it from dict
         if old_id is not None:
-            self._unshape_interface(
-                old_id,
-                self.wan,
-                tc.device.controlledIP,
-                old_settings.settings.up,
-            )
-            self._unshape_interface(
-                old_id,
-                self.lan,
-                tc.device.controlledIP,
-                old_settings.settings.down,
-            )
-            del self._id_to_ip_map[old_id]
+	    # unshaping up way
+	    for count, item in enumerate(tc.settings.up.preItems, start=1):
+           	self._unshape_interface(
+            		old_id + count ,
+            		self.wan,
+            		tc.device.controlledIP,
+            		item,
+            	)
+
+	    # unshaping down way
+	    for count, item in enumerate(tc.settings.down.preItems, start=1):
+           	self._unshape_interface(
+           		old_id + count ,
+           		self.lan,
+           		tc.device.controlledIP,
+           		item,
+           	)
+            
+	    del self._id_to_ip_map[old_id]
             self.idmanager.free(old_id)
 
         return TrafficControlRc(code=ReturnCode.OK)
@@ -464,18 +478,23 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         id = self._ip_to_id_map.get(dev.controlledIP, None)
         shaping = self._current_shapings.get(dev.controlledIP, {}).get('tc')
         if id is not None:
-            self._unshape_interface(
-                id,
-                self.wan,
-                dev.controlledIP,
-                shaping.settings.up,
-            )
-            self._unshape_interface(
-                id,
-                self.lan,
-                dev.controlledIP,
-                shaping.settings.down,
-            )
+	    # unshaping up way
+	    for count, item in enumerate(shaping.settings.up.preItems, start=1):
+           	self._unshape_interface(
+            		id + count ,
+            		self.wan,
+            		dev.controlledIP,
+            		item,
+            	)
+
+	    # unshaping down way
+	    for count, item in enumerate(shaping.settings.down.preItems, start=1):
+           	self._unshape_interface(
+           		id + count ,
+           		self.lan,
+           		dev.controlledIP,
+           		item,
+           	)
             self._del_mapping(id, dev.controlledIP)
             self.db_task.queue.put((dev.controlledIP, 'remove_shaping'))
             self.idmanager.free(id)

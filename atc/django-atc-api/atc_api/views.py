@@ -70,7 +70,11 @@ class AtcApi(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
+	
         serializer = SettingSerializer(tc.settings)
+	
+    	print 'Shaping Serializer', serializer.data
+
         return Response(
             serializer.data,
             status=status.HTTP_200_OK

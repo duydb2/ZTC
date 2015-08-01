@@ -15,12 +15,14 @@ from atc_thrift.ttypes import Reorder
 from atc_thrift.ttypes import Shaping
 from atc_thrift.ttypes import TrafficControlledDevice
 from atc_thrift.ttypes import TrafficControlSetting
+from atc_thrift.ttypes import preShaping
 
 from rest_framework import serializers
 from thrift.Thrift import TType
 
 import socket
-
+import thrift_json_encoder
+import thrift_json_decoder
 
 def validate_ipaddr(ipaddr):
     try:
@@ -55,6 +57,8 @@ class ThriftSerializer(serializers.Serializer):
 
             serializer = self.fields[f_name]
 
+	    print serializer 
+	    
             if f_name not in attrs:
                 args[arg_name] = default
                 continue
@@ -111,8 +115,28 @@ class IptablesOptionsField(serializers.Field):
             return []
 
 
-class ShapingSerializer(ThriftSerializer):
-    _THRIFT_CLASS = Shaping
+class preShapingsField(serializers.Field):
+
+    def to_representation(self, data):
+    #	print 'type -->', type(data[0])
+    #	print 'data -->', data
+        if isinstance(data, list):
+		return thrift_json_encoder.thrift_to_json(data)
+        else:
+            msg = self.error_messages['invalid']
+            raise serializers.ValidationError(msg)
+
+    def to_internal_value(self, obj):
+    #	print 'type -->', type(obj)
+    # 	print 'obj  -->', obj
+        if obj:
+            return obj
+        else:
+            return []
+	    
+
+class preShapingSerializer(ThriftSerializer):
+    _THRIFT_CLASS = preShaping
 
     rate = serializers.IntegerField(default=0, allow_null=True, required=False)
     loss = LossSerializer(default=None, allow_null=True, required=False)
@@ -123,6 +147,12 @@ class ShapingSerializer(ThriftSerializer):
     iptables_options = IptablesOptionsField(
         default=None, allow_null=True, required=False)
 
+
+class ShapingSerializer(ThriftSerializer):
+    _THRIFT_CLASS = Shaping
+
+    preItems = preShapingSerializer(many=True, default=None, allow_null=False, required=False)
+   	
 
 class SettingSerializer(ThriftSerializer):
     _THRIFT_CLASS = TrafficControlSetting
