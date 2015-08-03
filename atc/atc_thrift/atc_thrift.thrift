@@ -47,7 +47,7 @@ struct Corruption {
   2: optional double correlation = 0,
 }
 
-struct preShaping {
+struct Shaping {
   1: i32 rate,
   2: optional Delay delay = {"delay": 0},
   3: optional Loss loss = {"percentage": 0},
@@ -56,13 +56,9 @@ struct preShaping {
   6: optional list<string> iptables_options,
 }
 
-struct Shaping {
-  1: list<preShaping> preItems,
-}
-
 struct TrafficControlSetting {
-  1: Shaping up,
-  2: Shaping down,
+  1: list<Shaping> up,
+  2: list<Shaping> down,
 }
 
 struct TrafficControlledDevice {

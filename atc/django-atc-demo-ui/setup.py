@@ -85,5 +85,5 @@ setup(
     package_data=get_package_data('atc_demo_ui'),
     classifiers=['Programming Language :: Python', ],
     long_description=README,
-    install_requires=install_requires,
+    # install_requires=install_requires,
 )

@@ -12,19 +12,33 @@ class ThriftJSONDecoder(json.JSONDecoder):
     parser for unittests etc.
     """
     ROOT_THRIFT_CLASS = 'root_thrift_class'
-  
+	
+    IS_STR = 'is_str'
+    mIsStr = None 
+	 
     def __init__(self, *args, **kwargs):
+    	self.mIsStr = kwargs[ThriftJSONDecoder.IS_STR]	   
+   	del kwargs[ThriftJSONDecoder.IS_STR]
+
     	self.root_thrift_class = kwargs[ThriftJSONDecoder.ROOT_THRIFT_CLASS]	   
    	del kwargs[ThriftJSONDecoder.ROOT_THRIFT_CLASS]
         super(ThriftJSONDecoder, self).__init__(*args, **kwargs)
 
-    def decode(self, json_str):
-	dict = super(ThriftJSONDecoder, self).decode(json_str)
-     	return self._convert(dict, TType.STRUCT, 
+    def decode(self, json_obj):
+	if self.mIsStr:
+	    dict = super(ThriftJSONDecoder, self).decode(json_obj)
+	else:
+	    dict = json_obj
+     	result = self._convert(dict, TType.STRUCT, 
 				(self.root_thrift_class, self.root_thrift_class.thrift_spec))
+	return result 
 
 
     def _convert(self, val, ttype, ttype_info):
+	# print '=== _convert ==='
+	# print val
+	# print ttype
+	# print ttype_info
 	if ttype == TType.STRUCT:
 	    (thrift_class, thrift_spec) = ttype_info
   	    ret = thrift_class()
@@ -56,10 +70,18 @@ class ThriftJSONDecoder(json.JSONDecoder):
 	    ret = not not val
 	else:
 	    raise Exception, 'Unrecognized thrift field type: %d' % ttype
+	# print ret
+	# print '=== end _convert ==='
 	return ret
 
-def json_to_thrift(json_str, root_thrift_class):
+def json_to_thrift(json_dict, root_thrift_class):
     """ A utility shortcut function to parse a thrift json object of the specified class."""
-    return json.loads(json_str, cls=ThriftJSONDecoder, root_thrift_class=root_thrift_class)
+    return json.loads(json_dict, is_str=False, cls=ThriftJSONDecoder, root_thrift_class=root_thrift_class)
+
+def jsonstr_to_thrift(json_str, root_thrift_class):
+    """ A utility shortcut function to parse a thrift json object of the specified class."""
+    return json.loads(json_str, is_str=True, cls=ThriftJSONDecoder, root_thrift_class=root_thrift_class)
+
+
 
 # vim: set expandtab ts=4 sw=4:

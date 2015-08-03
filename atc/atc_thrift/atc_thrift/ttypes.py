@@ -382,7 +382,7 @@ class Corruption(object):
   def __ne__(self, other):
     return not (self == other)
 
-class preShaping(object):
+class Shaping(object):
   """
   Attributes:
    - rate
@@ -492,7 +492,7 @@ class preShaping(object):
     if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
-    oprot.writeStructBegin('preShaping')
+    oprot.writeStructBegin('Shaping')
     if self.rate is not None:
       oprot.writeFieldBegin('rate', TType.I32, 1)
       oprot.writeI32(self.rate)
@@ -538,75 +538,6 @@ class preShaping(object):
   def __ne__(self, other):
     return not (self == other)
 
-class Shaping(object):
-  """
-  Attributes:
-   - preItems
-  """
-
-  thrift_spec = (
-    None, # 0
-    (1, TType.LIST, 'preItems', (TType.STRUCT,(preShaping, preShaping.thrift_spec)), None, ), # 1
-  )
-
-  def __init__(self, preItems=None,):
-    self.preItems = preItems
-
-  def read(self, iprot):
-    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
-      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 1:
-        if ftype == TType.LIST:
-          self.preItems = []
-          (_etype10, _size7) = iprot.readListBegin()
-          for _i11 in xrange(_size7):
-            _elem12 = preShaping()
-            _elem12.read(iprot)
-            self.preItems.append(_elem12)
-          iprot.readListEnd()
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
-      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
-      return
-    oprot.writeStructBegin('Shaping')
-    if self.preItems is not None:
-      oprot.writeFieldBegin('preItems', TType.LIST, 1)
-      oprot.writeListBegin(TType.STRUCT, len(self.preItems))
-      for iter13 in self.preItems:
-        iter13.write(oprot)
-      oprot.writeListEnd()
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def validate(self):
-    return
-
-
-  def __repr__(self):
-    L = ['%s=%r' % (key, value)
-      for key, value in self.__dict__.iteritems()]
-    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-  def __eq__(self, other):
-    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-  def __ne__(self, other):
-    return not (self == other)
-
 class TrafficControlSetting(object):
   """
   Attributes:
@@ -616,8 +547,8 @@ class TrafficControlSetting(object):
 
   thrift_spec = (
     None, # 0
-    (1, TType.STRUCT, 'up', (Shaping, Shaping.thrift_spec), None, ), # 1
-    (2, TType.STRUCT, 'down', (Shaping, Shaping.thrift_spec), None, ), # 2
+    (1, TType.LIST, 'up', (TType.STRUCT,(Shaping, Shaping.thrift_spec)), None, ), # 1
+    (2, TType.LIST, 'down', (TType.STRUCT,(Shaping, Shaping.thrift_spec)), None, ), # 2
   )
 
   def __init__(self, up=None, down=None,):
@@ -634,15 +565,25 @@ class TrafficControlSetting(object):
       if ftype == TType.STOP:
         break
       if fid == 1:
-        if ftype == TType.STRUCT:
-          self.up = Shaping()
-          self.up.read(iprot)
+        if ftype == TType.LIST:
+          self.up = []
+          (_etype10, _size7) = iprot.readListBegin()
+          for _i11 in xrange(_size7):
+            _elem12 = Shaping()
+            _elem12.read(iprot)
+            self.up.append(_elem12)
+          iprot.readListEnd()
         else:
           iprot.skip(ftype)
       elif fid == 2:
-        if ftype == TType.STRUCT:
-          self.down = Shaping()
-          self.down.read(iprot)
+        if ftype == TType.LIST:
+          self.down = []
+          (_etype16, _size13) = iprot.readListBegin()
+          for _i17 in xrange(_size13):
+            _elem18 = Shaping()
+            _elem18.read(iprot)
+            self.down.append(_elem18)
+          iprot.readListEnd()
         else:
           iprot.skip(ftype)
       else:
@@ -656,12 +597,18 @@ class TrafficControlSetting(object):
       return
     oprot.writeStructBegin('TrafficControlSetting')
     if self.up is not None:
-      oprot.writeFieldBegin('up', TType.STRUCT, 1)
-      self.up.write(oprot)
+      oprot.writeFieldBegin('up', TType.LIST, 1)
+      oprot.writeListBegin(TType.STRUCT, len(self.up))
+      for iter19 in self.up:
+        iter19.write(oprot)
+      oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.down is not None:
-      oprot.writeFieldBegin('down', TType.STRUCT, 2)
-      self.down.write(oprot)
+      oprot.writeFieldBegin('down', TType.LIST, 2)
+      oprot.writeListBegin(TType.STRUCT, len(self.down))
+      for iter20 in self.down:
+        iter20.write(oprot)
+      oprot.writeListEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

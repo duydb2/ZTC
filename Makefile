@@ -27,12 +27,21 @@ default: lint
 all: lint fulltest
 
 
+# new install packages locally.
+.PHONY: uninstall 
+uninstall:
+	cd atc/atc_thrift && pip uninstall -y atc_thrift 
+	cd atc/atcd && pip uninstall -y atcd
+	cd atc/django-atc-api && pip uninstall -y  django-atc-api 
+	cd atc/django-atc-demo-ui && pip uninstall -y  django-atc-demo-ui 
+	cd atc/django-atc-profile-storage && pip uninstall -y  django-atc-profile-storage
+
 # Install packages locally.
-.PHONY: install
-install:
-	cd atc/atc_thrift && pip install --upgrade --force-reinstall .
-	cd atc/atcd && pip install --upgrade --force-reinstall .
-	cd atc/django-atc-api && pip install --upgrade --force-reinstall .
+.PHONY:  install
+install: 
+	cd atc/atc_thrift && pip install --verbose --upgrade --force-reinstall .
+	cd atc/atcd && pip install --verbose --upgrade --force-reinstall .
+	cd atc/django-atc-api && pip install --verbose --upgrade --force-reinstall .
 	cd atc/django-atc-demo-ui && pip install --upgrade --force-reinstall .
 	cd atc/django-atc-profile-storage && pip install --upgrade --force-reinstall .
 

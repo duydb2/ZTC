@@ -77,5 +77,5 @@ setup(
     package_data=get_package_data('atc_api'),
     classifiers=['Programming Language :: Python', ],
     long_description=README,
-    install_requires=['atc_thrift', 'djangorestframework']
+    # install_requires=['atc_thrift', 'djangorestframework']
 )

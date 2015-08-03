@@ -266,7 +266,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         # blindly for eval
         names = [
             'TrafficControlledDevice', 'TrafficControl', 'Shaping',
- 	    'preShaping', 'TrafficControlSetting', 'Loss', 'Delay', 'Corruption', 'Reorder'
+ 	    'TrafficControlSetting', 'Loss', 'Delay', 'Corruption', 'Reorder'
         ]
         globals = {name: getattr(atc_thrift.ttypes, name) for name in names}
 
@@ -390,7 +390,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         ).get('tc')
 
 	# start shaping for up way
-	for count, item in enumerate(tc.settings.up.preItems, start=1):
+	for count, item in enumerate(tc.settings.up, start=1):
 		self.logger.info("up: start Shaping for item: {0}".format(item))
         	tcrc = self._shape_interface(
         	    new_id + count ,
@@ -402,7 +402,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
 	            return tcrc
 
 	# start shaping for down way
-	for count, item in enumerate(tc.settings.down.preItems, start=1):
+	for count, item in enumerate(tc.settings.down, start=1):
 		self.logger.info("down: start Shaping for item: {0}".format(item))
         	tcrc = self._shape_interface(
         	    new_id + count ,
@@ -413,7 +413,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         # If we failed to set shaping for LAN interfaces, we should remove
         # the shaping we just created for the WAN
         	if tcrc.code != ReturnCode.OK:
-		    for count, item in enumerate(tc.settings.up.preItems, start=1):
+		    for count, item in enumerate(tc.settings.up, start=1):
            		self._unshape_interface(
             			old_id + count ,
             			self.wan,
@@ -426,7 +426,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         # if there were an existing id, remove it from dict
         if old_id is not None:
 	    # unshaping up way
-	    for count, item in enumerate(tc.settings.up.preItems, start=1):
+	    for count, item in enumerate(tc.settings.up, start=1):
            	self._unshape_interface(
             		old_id + count ,
             		self.wan,
@@ -435,7 +435,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
             	)
 
 	    # unshaping down way
-	    for count, item in enumerate(tc.settings.down.preItems, start=1):
+	    for count, item in enumerate(tc.settings.down, start=1):
            	self._unshape_interface(
            		old_id + count ,
            		self.lan,
@@ -479,7 +479,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         shaping = self._current_shapings.get(dev.controlledIP, {}).get('tc')
         if id is not None:
 	    # unshaping up way
-	    for count, item in enumerate(shaping.settings.up.preItems, start=1):
+	    for count, item in enumerate(shaping.settings.up, start=1):
            	self._unshape_interface(
             		id + count ,
             		self.wan,
@@ -488,7 +488,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
             	)
 
 	    # unshaping down way
-	    for count, item in enumerate(shaping.settings.down.preItems, start=1):
+	    for count, item in enumerate(shaping.settings.down, start=1):
            	self._unshape_interface(
            		id + count ,
            		self.lan,

@@ -147,7 +147,17 @@ var Atc = React.createClass({
       }
 
       if (Array.isArray(x) || Array.isArray(y)) {
-        return x.toString() === y.toString();
+	if (x.length != y.length) {
+	    // if (debug)  console.error('List do not have the same size.');
+	    return false;
+	}
+	equals = true;
+	for (index = 0, len = x.length; index < len; index++){
+	    equals &= objectEquals(x[index], y[index]);    
+	}
+	
+	return equals;
+        // return x.toString() === y.toString();
       }
 
       if (x === null && y === null) {
@@ -170,7 +180,8 @@ var Atc = React.createClass({
         });
         return equals;
       }
-      return x.toString() === y.toString();
+      return JSON.stringify(x) === JSON.stringify(y);
+      // return x.toString() === y.toString();
     }
     return !objectEquals(this.state.settings, this.state.current_settings);
   },

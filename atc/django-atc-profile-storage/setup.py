@@ -78,5 +78,5 @@ setup(
     package_data=get_package_data('atc_profile_storage'),
     classifiers=['Programming Language :: Python', ],
     long_description=README,
-    install_requires=['djangorestframework']
+    # install_requires=['djangorestframework']
 )

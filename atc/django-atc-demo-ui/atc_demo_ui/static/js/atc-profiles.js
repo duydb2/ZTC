@@ -17,12 +17,19 @@ var Profile = React.createClass({
   },
 
   handleClick: function() {
+    console.log("handle click status: %s" , 
+	JSON.stringify(this.props.link_state("status"))
+    );
+    console.log("handle click settings: %s" , 
+	JSON.stringify(new AtcSettings().mergeWithDefaultSettings(this.props.profile.content))
+    );
     this.props.link_state("settings").requestChange(
       new AtcSettings().mergeWithDefaultSettings(this.props.profile.content)
     );
   },
 
   updateName: function(event) {
+    console.log("updateName: %s", JSON.stringify(event.target.value));
     this.setState({name: event.target.value});
   },
 
@@ -148,7 +155,6 @@ var ProfilePanel = React.createClass({
             <div className="panel-body">
               <ProfileList refreshProfiles={this.props.refreshProfiles} link_state={this.props.link_state} profiles={this.props.profiles} notify={this.props.notify}/>
 
-              <CreateProfileWidget refreshProfiles={this.props.refreshProfiles} link_state={this.props.link_state} notify={this.props.notify}/>
             </div>
           </div>
         </div>

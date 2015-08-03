@@ -20,7 +20,7 @@ from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-
+from rest_framework.parsers import JSONParser
 
 class BadGateway(APIException):
     status_code = 502
@@ -87,9 +87,11 @@ class AtcApi(APIView):
         the client IP
         @return the profile that was set on success
         '''
-        setting_serializer = SettingSerializer(data=request.DATA)
+	data = JSONParser().parse(request)
+	print data
+        setting_serializer = SettingSerializer(data=data)
         device_serializer = DeviceSerializer(
-            data=request.DATA,
+            data=data,
             context={'request': request, 'address': address},
         )
         if not setting_serializer.is_valid():

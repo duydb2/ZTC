@@ -164,15 +164,6 @@ var ShapingSettings = React.createClass({
           </div>
           <div id="collapseShaping" className="panel-collapse collapse in" role="tabpanel">
             <div className="panel-body">
-              <div className="row">
-                <div className="col-md-6">
-                  <LinkShapingSettings direction="up" link_state={this.props.link_state} />
-                </div>
-                <div className="col-md-6">
-                  <LinkShapingSettings direction="down" link_state={this.props.link_state} />
-                </div>
-              </div>
-
               <JSONView json={this.props.before} label="Before:" />
               <JSONView json={this.props.after} label="After:" />
             </div>

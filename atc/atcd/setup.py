@@ -70,6 +70,6 @@ setup(
     classifiers=['Programming Language :: Python', ],
     long_description=readme.read(),
     scripts=scripts,
-    install_requires=install_requires,
+    # install_requires=install_requires,
     tests_require=tests_require,
 )

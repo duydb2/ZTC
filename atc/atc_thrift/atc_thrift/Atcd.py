@@ -1739,11 +1739,11 @@ class listPacketCaptures_result(object):
       if fid == 0:
         if ftype == TType.LIST:
           self.success = []
-          (_etype17, _size14) = iprot.readListBegin()
-          for _i18 in xrange(_size14):
-            _elem19 = PacketCapture()
-            _elem19.read(iprot)
-            self.success.append(_elem19)
+          (_etype24, _size21) = iprot.readListBegin()
+          for _i25 in xrange(_size21):
+            _elem26 = PacketCapture()
+            _elem26.read(iprot)
+            self.success.append(_elem26)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
@@ -1766,8 +1766,8 @@ class listPacketCaptures_result(object):
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.LIST, 0)
       oprot.writeListBegin(TType.STRUCT, len(self.success))
-      for iter20 in self.success:
-        iter20.write(oprot)
+      for iter27 in self.success:
+        iter27.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.failure is not None:
@@ -1859,11 +1859,11 @@ class listRunningPacketCaptures_result(object):
       if fid == 0:
         if ftype == TType.LIST:
           self.success = []
-          (_etype24, _size21) = iprot.readListBegin()
-          for _i25 in xrange(_size21):
-            _elem26 = PacketCapture()
-            _elem26.read(iprot)
-            self.success.append(_elem26)
+          (_etype31, _size28) = iprot.readListBegin()
+          for _i32 in xrange(_size28):
+            _elem33 = PacketCapture()
+            _elem33.read(iprot)
+            self.success.append(_elem33)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
@@ -1880,8 +1880,8 @@ class listRunningPacketCaptures_result(object):
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.LIST, 0)
       oprot.writeListBegin(TType.STRUCT, len(self.success))
-      for iter27 in self.success:
-        iter27.write(oprot)
+      for iter34 in self.success:
+        iter34.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2353,11 +2353,11 @@ class getDevicesControlledBy_result(object):
       if fid == 0:
         if ftype == TType.LIST:
           self.success = []
-          (_etype31, _size28) = iprot.readListBegin()
-          for _i32 in xrange(_size28):
-            _elem33 = RemoteControlInstance()
-            _elem33.read(iprot)
-            self.success.append(_elem33)
+          (_etype38, _size35) = iprot.readListBegin()
+          for _i39 in xrange(_size35):
+            _elem40 = RemoteControlInstance()
+            _elem40.read(iprot)
+            self.success.append(_elem40)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
@@ -2374,8 +2374,8 @@ class getDevicesControlledBy_result(object):
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.LIST, 0)
       oprot.writeListBegin(TType.STRUCT, len(self.success))
-      for iter34 in self.success:
-        iter34.write(oprot)
+      for iter41 in self.success:
+        iter41.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2481,11 +2481,11 @@ class getDevicesControlling_result(object):
       if fid == 0:
         if ftype == TType.LIST:
           self.success = []
-          (_etype38, _size35) = iprot.readListBegin()
-          for _i39 in xrange(_size35):
-            _elem40 = RemoteControlInstance()
-            _elem40.read(iprot)
-            self.success.append(_elem40)
+          (_etype45, _size42) = iprot.readListBegin()
+          for _i46 in xrange(_size42):
+            _elem47 = RemoteControlInstance()
+            _elem47.read(iprot)
+            self.success.append(_elem47)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
@@ -2502,8 +2502,8 @@ class getDevicesControlling_result(object):
     if self.success is not None:
       oprot.writeFieldBegin('success', TType.LIST, 0)
       oprot.writeListBegin(TType.STRUCT, len(self.success))
-      for iter41 in self.success:
-        iter41.write(oprot)
+      for iter48 in self.success:
+        iter48.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()

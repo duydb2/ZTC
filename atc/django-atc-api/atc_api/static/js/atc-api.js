@@ -83,8 +83,8 @@ AtcRestClient.prototype.updateAuthInfo = function (address, data, callback) {
 
 function AtcSettings () {
     this.defaults = {
-        'up': {
-            'rate': null,
+        'up': Array({
+            'rate': 0,
             'delay': {
                 'delay': 0,
                 'jitter': 0,
@@ -104,9 +104,9 @@ function AtcSettings () {
                 'correlation': 0
             },
             'iptables_options': Array(),
-        },
-        'down': {
-            'rate': null,
+        }),
+        'down': Array({
+            'rate': 0,
             'delay': {
                 'delay': 0,
                 'jitter': 0,
@@ -126,7 +126,7 @@ function AtcSettings () {
                 'correlation': 0
             },
             'iptables_options': Array(),
-        }
+        })
     };
 
     this.getDefaultSettings = function () {
@@ -134,6 +134,7 @@ function AtcSettings () {
     };
 
     this.mergeWithDefaultSettings = function (data) {
-        return $.extend(true, {}, this.defaults, data);
+        result = $.extend(true, {}, this.defaults, data);
+	return result;
     };
 }
