@@ -23,10 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'luj_jam&2nca+r$5sh_l7rm5tu3zl$u!d&h!f*0hji2x9av!zm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True 
+DEBUG = False 
 
 ALLOWED_HOSTS = ['*']
 
+ATC_API = {
+    'ATCD_HOST': 'localhost',
+    'ATCD_PORT': 9091,
+    'DEFAULT_TC_TIMEOUT': 24 * 60 * 60,
+    'PROXY_IPS': ['127.0.0.1'],
+}
 
 # Application definition
 

@@ -14,6 +14,8 @@ TESTVMS = gateway client server
 
 FLAKE=python -m flake8
 PEP=pep8
+ILAN?=wlan0
+IWAN?=wlan1
 
 
 # By default, we just lint since we want this to be **fast**.
@@ -44,6 +46,14 @@ install:
 	cd atc/django-atc-api && pip install --verbose --upgrade --force-reinstall .
 	cd atc/django-atc-demo-ui && pip install --upgrade --force-reinstall .
 	cd atc/django-atc-profile-storage && pip install --upgrade --force-reinstall .
+
+# Run service 
+.PHONY: run
+run: install
+	# use local db
+	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-port 9091 --daemon --sqlite-file traffic_control.db --kill
+	python atcui/manage.py migrate	
+	python atcui/manage.py runserver 0.0.0.0:8000
 
 
 # Publish packages to PyPi.
