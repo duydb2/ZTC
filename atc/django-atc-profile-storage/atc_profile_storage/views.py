@@ -1,68 +1,151 @@
-#
-#  Copyright (c) 2014, Facebook, Inc.
-#  All rights reserved.
-#
-#  This source code is licensed under the BSD-style license found in the
-#  LICENSE file in the root directory of this source tree. An additional grant
-#  of patent rights can be found in the PATENTS file in the same directory.
-#
-#
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
 from atc_profile_storage.models import Profile
 from atc_profile_storage.serializers import ProfileSerializer
 
+from functools import wraps
+from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ParseError
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.parsers import JSONParser
 
-class JSONResponse(HttpResponse):
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
+class BadGateway(APIException):
+    status_code = 502
+    default_detail = 'Could not connect to ATC gateway.'
 
 
-@csrf_exempt
-def profile_list(request):
-    if request.method == 'GET':
+def serviced(method):
+    '''
+    A decorator to check if the service is available or not.
+    Raise a BadGateway exception on failure to connect to the atc gateway
+    '''
+    @wraps(method)
+    def decorator(cls, request, *args, **kwargs):
+	service = None
+#        service = atcdClient()
+#        if service is None:
+#            raise BadGateway()
+        return method(cls, request, service, *args, **kwargs)
+    return decorator
+
+
+class ProfilesApi(APIView):
+
+    @serviced
+    def get(self, request, service):
         profiles = Profile.objects.all()
         serializer = ProfileSerializer(profiles, many=True)
-        return JSONResponse(serializer.data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = ProfileSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+    @serviced
+    def post(self, request, service):
+       	data = request.DATA 
+        profiles = Profile.objects.all()
+	profiles.delete()
+      	serializer = ProfileSerializer(data=data, many=True)
+       	if not serializer.is_valid():
+       	     raise ParseError(detail=serializer.errors)
 
-    else:
-        return HttpResponse(status=405)
+	serializer.save()
+
+       	return Response(
+       	    serializer.data,
+       	    status=status.HTTP_201_CREATED
+       	)
+ 
+    @serviced
+    def delete(self, request, service, pk=None):
+	profiles = Profile.objects.all() 
+	profiles.delete()
+       	return Response(
+       	    status=status.HTTP_204_NO_CONTENT
+       	)
 
 
-@csrf_exempt
-def profile_detail(request, pk):
-    try:
-        profile = Profile.objects.get(pk=pk)
-    except Profile.DoesNotExist:
-        return HttpResponse(status=404)
+class ProfileApi(APIView):
+      
+    def get_object(self, pk):
+     	try:
+       	  profile = Profile.objects.get(pk=pk)
+     	except Profile.DoesNotExist as e:
+       	   return Response(
+               e.message,
+	       status=status.HTTP_404_OK
+           )
 
-    if request.method == 'GET':
+    @serviced
+    def get(self, request, service, pk=None, format=None):
+	profile = self.get_object(pk)
         serializer = ProfileSerializer(profile)
-        return JSONResponse(serializer.data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = ProfileSerializer(profile, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serializer.data)
-        return JSONResponse(serializer.errors, status=400)
+    @serviced
+    def post(self, request, service, pk=None, format=None):
+	profile = self.get_object(pk)
+ 	data = request.DATA
+       	serializer = ProfileSerializer(profile, data=data)
+       	if not serializer.is_valid():
+       	     raise ParseError(detail=serializer.errors)
 
-    elif request.method == 'DELETE':
-        profile.delete()
-        return HttpResponse(status=204)
+       	serializer.save()
+       	return Response(
+       	    serializer.data,
+       	    status=status.HTTP_201_CREATED
+       	)
 
-    else:
-        return HttpResponse(status=405)
+    @serviced
+    def delete(self, request, service, pk=None):
+	profile = self.get_object(pk)
+	profile.delete()
+       	return Response(
+       	    status=status.HTTP_204_NO_CONTENT
+       	)
+
+# class JSONResponse(HttpResponse):
+#     def __init__(self, data, **kwargs):
+#         content = JSONRenderer().render(data)
+#         kwargs['content_type'] = 'application/json'
+#         super(JSONResponse, self).__init__(content, **kwargs)
+# 
+# 
+# @csrf_exempt
+# def profile_list(request):
+#     if request.method == 'GET':
+#         return JSONResponse(serializer.data)
+#     elif request.method == 'POST':
+#         return HttpResponse(status=405)
+#     else:
+#         return HttpResponse(status=405)
+# 
+# 
+# @csrf_exempt
+# def profile_detail(request, pk):
+#     try:
+#         profile = Profile.objects.get(pk=pk)
+#     except Profile.DoesNotExist:
+#         return HttpResponse(status=404)
+# 
+#     if request.method == 'GET':
+#         serializer = ProfileSerializer(profile)
+#         return JSONResponse(serializer.data)
+# 
+#     elif request.method == 'POST':
+#         data = JSONParser().parse(request)
+#         serializer = ProfileSerializer(profile, data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return JSONResponse(serializer.data)
+#         return JSONResponse(serializer.errors, status=400)
+# 
+#     elif request.method == 'DELETE':
+#         profile.delete()
+#         return HttpResponse(status=204)
+# 
+#     else:
+#         return HttpResponse(status=405)
