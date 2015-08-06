@@ -67,18 +67,24 @@ class ProfilesApi(APIView):
 
 class ProfileApi(APIView):
       
-    def get_object(self, pk):
+    def get_object(self, pk, create=None):
+	""" get exist object if not, create """
      	try:
        	  profile = Profile.objects.get(pk=pk)
      	except Profile.DoesNotExist as e:
+	 if create: 
+	   profile = Profile.objects.create(id=pk, name='profile id=%s'%pk, content={u'up': [], u'down':[]})
+	 else:
        	   return Response(
                e.message,
 	       status=status.HTTP_404_OK
            )
+	return profile
 
+		
     @serviced
     def get(self, request, service, pk=None, format=None):
-	profile = self.get_object(pk)
+	profile = self.get_object(pk, create=True)
         serializer = ProfileSerializer(profile)
         return Response(
             serializer.data,
@@ -102,7 +108,8 @@ class ProfileApi(APIView):
     @serviced
     def delete(self, request, service, pk=None):
 	profile = self.get_object(pk)
-	profile.delete()
+	if profile:
+	    profile.delete()
        	return Response(
        	    status=status.HTTP_204_NO_CONTENT
        	)
