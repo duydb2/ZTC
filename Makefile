@@ -51,8 +51,11 @@ install:
 .PHONY: run
 run: install
 	# use local db
-	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-port 9091 --daemon --sqlite-file traffic_control.db --kill
+	atcd --kill
+	sleep 1
+	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-port 9091 --sqlite-file traffic_control.db --daemon 
 	python atcui/manage.py migrate	
+	sleep 1
 	python atcui/manage.py runserver 0.0.0.0:8000
 
 
