@@ -1,7 +1,7 @@
 #!/bin/bash
 
-WAN=${1:-eth0}
-LAN=${2:-eth1}
+WAN=${1:-wlan0}
+LAN=${2:-wlan1}
 
 function title {
     echo

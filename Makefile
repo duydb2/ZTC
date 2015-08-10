@@ -14,8 +14,8 @@ TESTVMS = gateway client server
 
 FLAKE=python -m flake8
 PEP=pep8
-ILAN?=wlan0
-IWAN?=wlan1
+ILAN?=wlan1
+IWAN?=wlan0
 
 
 # By default, we just lint since we want this to be **fast**.
@@ -53,7 +53,7 @@ run: install
 	# use local db
 	atcd --kill
 	sleep 1
-	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-port 9091 --sqlite-file traffic_control.db --daemon 
+	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-port 9091 --sqlite-file traffic_control.db --daemon --atcd-mode unsecure --logfile atcd.log
 	python atcui/manage.py migrate	
 	sleep 1
 	python atcui/manage.py runserver 0.0.0.0:8000
