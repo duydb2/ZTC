@@ -1,6 +1,6 @@
 {
     "content": {
-        "down": {
+        "down": [{
             "corruption": {
                 "correlation": 0,
                 "percentage": 0
@@ -21,8 +21,8 @@
                 "gap": 0,
                 "percentage": 0
             }
-        },
-        "up": {
+        }],
+        "up": [{
             "corruption": {
                 "correlation": 0,
                 "percentage": 0
@@ -43,7 +43,7 @@
                 "gap": 0,
                 "percentage": 0
             }
-        }
+        }]
     },
     "id": 8,
     "name": "Edge - Good"

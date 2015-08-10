@@ -93,7 +93,7 @@ class ProfileApi(APIView):
 
     @serviced
     def post(self, request, service, pk=None, format=None):
-	profile = self.get_object(pk)
+	profile = self.get_object(pk, create=True)
  	data = request.DATA
        	serializer = ProfileSerializer(profile, data=data)
        	if not serializer.is_valid():

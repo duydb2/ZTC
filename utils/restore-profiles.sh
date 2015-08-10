@@ -9,8 +9,9 @@ if [ -z "$ATC_HOST" ] ; then
     exit 1
 fi
 
-for x in $(git rev-parse --show-toplevel)/utils/profiles/* ; do
-    out=$(curl --silent http://"$ATC_HOST"/api/v1/profiles/ -d "@${x}")
+for x in $(git rev-parse --show-toplevel)/utils/profiles/*.json ; do
+    profile_id=$(cat ${x} | python -c 'import sys, json; print(json.load(sys.stdin)["id"])')
+    out=$(curl -H "Content-Type: application/json" -X POST --silent http://"$ATC_HOST"/api/v1/profiles/${profile_id}/ -d "@${x}")
     rc="$?"
     if [ "$rc" -ne "0" ] ; then
         echo "Could not add profile $x (curl exit code $rc)"
@@ -19,6 +20,7 @@ for x in $(git rev-parse --show-toplevel)/utils/profiles/* ; do
             echo
         fi
     else
+	echo "$out" > $x.html
         echo "Added profile $x"
     fi
 done
