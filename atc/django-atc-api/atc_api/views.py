@@ -87,7 +87,8 @@ class AtcApi(APIView):
         the client IP
         @return the profile that was set on success
         '''
-	data = JSONParser().parse(request)
+	# data = JSONParser().parse(request)
+	data = request.DATA
 	print data
         setting_serializer = SettingSerializer(data=data)
         device_serializer = DeviceSerializer(
