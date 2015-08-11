@@ -1,7 +1,7 @@
 #!/bin/bash
 
-WAN=${1:-wlan0}
-LAN=${2:-wlan1}
+# WAN=${1:-wlan0}
+# LAN=${2:-wlan1}
 
 function title {
     echo
@@ -19,7 +19,7 @@ do
     run_cmd "${cmd}"
 done
 
-for netif in ${WAN} ${LAN}
+for netif in ${IWAN} ${ILAN}
 do
     for object in qdisc class filter
     do
