@@ -53,7 +53,7 @@ run: install
 	# use local db
 	atcd --kill
 	sleep 1
-	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-host 0.0.0.0 --thrift-port 9091 --sqlite-file traffic_control.db --atcd-mode unsecure --logfile atcd.log &
+	atcd --atcd-lan ${ILAN} --atcd-wan ${IWAN} --thrift-host 0.0.0.0 --thrift-port 9091 --sqlite-file traffic_control.db --atcd-mode unsecure  &
 	python atcui/manage.py migrate	
 	sleep 1
 	python atcui/manage.py runserver 0.0.0.0:8000

@@ -426,7 +426,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
         # if there were an existing id, remove it from dict
         if old_id is not None:
 	    # unshaping up way
-	    for count, item in enumerate(tc.settings.up, start=1):
+	    for count, item in enumerate(old_settings.settings.up, start=1):
            	self._unshape_interface(
             		old_id + count ,
             		self.wan,
@@ -435,7 +435,7 @@ class AtcdThriftHandlerTask(ThriftHandlerTask):
             	)
 
 	    # unshaping down way
-	    for count, item in enumerate(tc.settings.down, start=1):
+	    for count, item in enumerate(old_settings.settings.down, start=1):
            	self._unshape_interface(
            		old_id + count ,
            		self.lan,
