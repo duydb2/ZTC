@@ -164,8 +164,8 @@ var ShapingSettings = React.createClass({
           </div>
           <div id="collapseShaping" className="panel-collapse collapse in" role="tabpanel">
             <div className="panel-body">
-              <JSONView json={this.props.before} label="Before:" />
-              <JSONView json={this.props.after} label="After:" />
+              <JSONView json={this.props.selected_settings} label="Selected:" />
+              <JSONView json={this.props.current_settings} label="Current:" />
             </div>
           </div>
         </div>

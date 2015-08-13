@@ -289,7 +289,7 @@ var Atc = React.createClass({
         <NotificationPanel notifications={this.state.notifications} />
         <AuthPanel client={this.state.client} notify={this.notify}/>
         <ProfilePanel refreshProfiles={this.getProfiles} link_state={link_state} profiles={this.state.profiles} notify={this.notify} />
-        <ShapingSettings link_state={link_state} before={this.state.settings} after={this.state.current_settings} notify={this.notify} />
+        <ShapingSettings link_state={link_state} selected_settings={this.state.settings} current_settings={this.state.current_settings} notify={this.notify} />
       </div>
     )
   }

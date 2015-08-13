@@ -22,3 +22,11 @@ We're not using anchors, so make sure users know they can click on panel headers
 .error-timer {
     text-align: right;
 }
+.zalo-list-group {
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.zalo-btn {
+    padding: 6px 6px;
+}

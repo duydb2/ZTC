@@ -16,7 +16,17 @@ var Profile = React.createClass({
     };
   },
 
-  handleClick: function() {
+  handleEditClick: function() {
+    console.log("handle click status: %s" , 
+	JSON.stringify(this.props.link_state("status"))
+    );
+    console.log("handle click settings: %s" , 
+	JSON.stringify(new AtcSettings().mergeWithDefaultSettings(this.props.profile.content))
+    );
+    window.location = "../api/v1/profiles/" + this.props.profile.id;
+  },
+
+  handleSelectClick: function() {
     console.log("handle click status: %s" , 
 	JSON.stringify(this.props.link_state("status"))
     );
@@ -40,11 +50,11 @@ var Profile = React.createClass({
   render: function () {
     return (
       <div className="list-group-item row">
-        <span className="col-sm-6 text-center vcenter"><kbd>{this.props.profile.name}</kbd></span>
-        <span className="col-sm-2 text-center vcenter">{this.props.profile.content.up.rate} kbps</span>
-        <span className="col-sm-2 text-center vcenter">{this.props.profile.content.down.rate} kbps</span>
-        <button className="col-sm-1 btn btn-info vcenter" onClick={this.handleClick}>Select</button>
-        <button className="col-sm-1 btn btn-danger vcenter" onClick={this.removeProfile}>Delete</button>
+        <span className="col-xs-2 col-sm-2 text-center vcenter"><kbd>{this.props.profile.id}</kbd></span>
+        <span className="col-xs-8 col-sm-6 text-center vcenter"><kbd>{this.props.profile.name}</kbd></span>
+        <button className="col-xs-4 col-sm-1 btn btn-info vcenter zalo-btn" onClick={this.handleSelectClick}>Select</button>
+        <button className="col-xs-4 col-sm-1 btn btn-info vcenter zalo-btn" onClick={this.handleEditClick}>Edit</button>
+        <button className="col-xs-4 col-sm-1 btn btn-danger vcenter zalo-btn" onClick={this.removeProfile}>Delete</button>
       </div>);
   }
 });
@@ -68,11 +78,11 @@ var ProfileList = React.createClass({
         <p>
           Select a profile from the list below to use it.
         </p>
-        <div className="list-group">
+        <div className="list-group zalo-group">
           <div className="list-group-item row">
+            <span className="col-sm-2 text-center vcenter"><b>ID</b></span>
             <span className="col-sm-6 text-center vcenter"><b>Name</b></span>
-            <span className="col-sm-2 text-center vcenter"><b>Up Rate</b></span>
-            <span className="col-sm-2 text-center vcenter"><b>Down Rate</b></span>
+            <span className="col-sm-1 text-center vcenter"></span>
             <span className="col-sm-1 text-center vcenter"></span>
             <span className="col-sm-1 text-center vcenter"></span>
           </div>
@@ -151,7 +161,7 @@ var ProfilePanel = React.createClass({
               Profiles
             </h3>
           </div>
-          <div id="collapseProfiles" className="panel-collapse collapse" role="tabpanel">
+          <div id="collapseProfiles" className="panel-collapse collapse in" role="tabpanel">
             <div className="panel-body">
               <ProfileList refreshProfiles={this.props.refreshProfiles} link_state={this.props.link_state} profiles={this.props.profiles} notify={this.props.notify}/>
 
