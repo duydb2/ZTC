@@ -1,63 +1,844 @@
----
----
-{% include header.html %}
-    <div class="section_title">About</div>
-    <p>
-    <a href="{{ site.data.config.project_github }}">{{ site.data.config.project_fullname }}</a> (aka <strong>{{ site.data.config.project_name }}</strong>) is a project that allows developers to control the connection that a device has to the internet. Developers can use <strong>{{ site.data.config.project_name }}</strong> to test their application across varying network conditions, easily emulating high speed, mobile, and even severely impaired networks.</p>
-    <p>
-    Aspects that can be controlled by ATC include:
-    <ul>
-      <li>Bandwith</li>
-      <li>Latency</li>
-      <li>Packet loss</li>
-      <li>Packet corruption</li>
-      <li>Packet reordering</li>
-    </ul>
-    </p>
+<!DOCTYPE html>
+<html>
+<head>
+        <script type="text/x-mathjax-config;executed=true">
+            MathJax.Hub.Config({
+                    tex2jax: {
+                        inlineMath: [
+                            ['$', '$'],
+                            ['\\(', '\\)']
+                        ],
+                        processEscapes: true
+                    }
+                });
+        </script>
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+        <style type="text/css">
+            h1, h2, h3, h4, h5, h6, p, blockquote {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family:"Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+                font-size: 13px;
+                line-height: 18px;
+                color: #fff;
+                background-color: #282a36;
+                margin: 10px 13px 10px 13px;
+            }
+            a {
+                color: #59acf3;
+            }
+            a:hover {
+                color: #a7d8ff;
+                text-decoration: none;
+            }
+            a img {
+                border: none;
+            }
+            p {
+                margin-bottom: 9px;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: #fff;
+                line-height: 36px;
+            }
+            h1 {
+                margin-bottom: 18px;
+                font-size: 30px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            h3 {
+                font-size: 18px;
+            }
+            h4 {
+                font-size: 16px;
+            }
+            h5 {
+                font-size: 14px;
+            }
+            h6 {
+                font-size: 13px;
+            }
+            hr {
+                margin: 0 0 19px;
+                border: 0;
+                border-bottom: 1px solid #ccc;
+            }
+            blockquote {
+                padding: 13px 13px 21px 15px;
+                margin-bottom: 18px;
+                font-family:georgia, serif;
+                font-style: italic;
+            }
+            blockquote:before {
+                content:"\201C";
+                font-size:40px;
+                margin-left:-10px;
+                font-family:georgia, serif;
+                color:#eee;
+            }
+            blockquote p {
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 18px;
+                margin-bottom: 0;
+                font-style: italic;
+            }
+            code, pre {
+                font-family: Monaco, Andale Mono, Courier New, monospace;
+            }
+            code {
+                color: #ff4a14;
+                padding: 1px 3px;
+                font-size: 12px;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+            }
+            pre {
+                display: block;
+                padding: 14px;
+                margin: 0 0 18px;
+                line-height: 16px;
+                font-size: 11px;
+                border: 1px solid #bf370f;
+                white-space: pre;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+            pre code {
+                background-color: #282a36;
+                color: #ff4a14;
+                font-size: 11px;
+                padding: 0;
+            }
+            @media screen and (min-width: 768px) {
+                body {
+                    width: 748px;
+                    margin:10px auto;
+                }
+            }
+            /* Obsidian style ported by Alexander Marenin (http://github.com/ioncreature) */
+            pre code {
+                display: block;
+                padding: 0.5em;
+                background: #282B2E;
+            }
+            pre .keyword, pre .literal, pre .change, pre .winutils, pre .flow, pre .lisp .title, pre .clojure .built_in, pre .nginx .title, pre .css .id, pre .tex .special {
+                color: #93C763;
+            }
+            pre .number {
+                color: #FFCD22;
+            }
+            pre code {
+                color: #E0E2E4;
+            }
+            pre .css .tag, pre .css .pseudo {
+                color: #D0D2B5;
+            }
+            pre .attribute, pre code .constant {
+                color: #668BB0;
+            }
+            pre .xml .attribute {
+                color: #B3B689;
+            }
+            pre .xml .tag .value {
+                color: #E8E2B7;
+            }
+            pre .code, pre .class .title, pre .header {
+                color: white;
+            }
+            pre .class, pre .hexcolor {
+                color: #93C763;
+            }
+            pre .regexp {
+                color: #D39745;
+            }
+            pre .at_rule, pre .at_rule .keyword {
+                color: #A082BD;
+            }
+            pre .doctype {
+                color: #557182;
+            }
+            pre .link_url, pre .tag, pre .tag .title, pre .bullet, pre .subst, pre .emphasis, pre .haskell .type, pre .preprocessor, pre .ruby .class .parent, pre .built_in, pre .sql .aggregate, pre .django .template_tag, pre .django .variable, pre .smalltalk .class, pre .javadoc, pre .django .filter .argument, pre .smalltalk .localvars, pre .smalltalk .array, pre .attr_selector, pre .pseudo, pre .addition, pre .stream, pre .envvar, pre .apache .tag, pre .apache .cbracket, pre .tex .command, pre .prompt {
+                color: #8CBBAD;
+            }
+            pre .string {
+                color: #EC7600;
+            }
+            pre .comment, pre .java .annotation, pre .blockquote, pre .horizontal_rule, pre .python .decorator, pre .template_comment, pre .pi, pre .deletion, pre .shebang, pre .apache .sqbracket, pre .tex .formula {
+                color: #818E96;
+            }
+            pre .keyword, pre .literal, pre .css .id, pre .phpdoc, pre .title, pre .header, pre .haskell .type, pre .vbscript .built_in, pre .sql .aggregate, pre .rsl .built_in, pre .smalltalk .class, pre .diff .header, pre .chunk, pre .winutils, pre .bash .variable, pre .apache .tag, pre .tex .special, pre .request, pre .at_rule .keyword, pre .status {
+                font-weight: bold;
+            }
+            pre .coffeescript .javascript, pre .javascript .xml, pre .tex .formula, pre .xml .javascript, pre .xml .vbscript, pre .xml .css, pre .xml .cdata {
+                opacity: 0.5;
+            }
+        </style>
+        <style type="text/css">
+            .MathJax_Hover_Frame {
+                border-radius: .25em;
+                -webkit-border-radius: .25em;
+                -moz-border-radius: .25em;
+                -khtml-border-radius: .25em;
+                box-shadow: 0px 0px 15px #83A;
+                -webkit-box-shadow: 0px 0px 15px #83A;
+                -moz-box-shadow: 0px 0px 15px #83A;
+                -khtml-box-shadow: 0px 0px 15px #83A;
+                border: 1px solid #A6D ! important;
+                display: inline-block;
+                position: absolute
+            }
+            .MathJax_Hover_Arrow {
+                position: absolute;
+                width: 15px;
+                height: 11px;
+                cursor: pointer
+            }
+        </style>
+        <style type="text/css">
+            #MathJax_About {
+                position: fixed;
+                left: 50%;
+                width: auto;
+                text-align: center;
+                border: 3px outset;
+                padding: 1em 2em;
+                background-color: #DDDDDD;
+                color: black;
+                cursor: default;
+                font-family: message-box;
+                font-size: 120%;
+                font-style: normal;
+                text-indent: 0;
+                text-transform: none;
+                line-height: normal;
+                letter-spacing: normal;
+                word-spacing: normal;
+                word-wrap: normal;
+                white-space: nowrap;
+                float: none;
+                z-index: 201;
+                border-radius: 15px;
+                -webkit-border-radius: 15px;
+                -moz-border-radius: 15px;
+                -khtml-border-radius: 15px;
+                box-shadow: 0px 10px 20px #808080;
+                -webkit-box-shadow: 0px 10px 20px #808080;
+                -moz-box-shadow: 0px 10px 20px #808080;
+                -khtml-box-shadow: 0px 10px 20px #808080;
+                filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+            }
+            .MathJax_Menu {
+                position: absolute;
+                background-color: white;
+                color: black;
+                width: auto;
+                padding: 2px;
+                border: 1px solid #CCCCCC;
+                margin: 0;
+                cursor: default;
+                font: menu;
+                text-align: left;
+                text-indent: 0;
+                text-transform: none;
+                line-height: normal;
+                letter-spacing: normal;
+                word-spacing: normal;
+                word-wrap: normal;
+                white-space: nowrap;
+                float: none;
+                z-index: 201;
+                box-shadow: 0px 10px 20px #808080;
+                -webkit-box-shadow: 0px 10px 20px #808080;
+                -moz-box-shadow: 0px 10px 20px #808080;
+                -khtml-box-shadow: 0px 10px 20px #808080;
+                filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+            }
+            .MathJax_MenuItem {
+                padding: 2px 2em;
+                background: transparent
+            }
+            .MathJax_MenuArrow {
+                position: absolute;
+                right: .5em;
+                color: #666666
+            }
+            .MathJax_MenuActive .MathJax_MenuArrow {
+                color: white
+            }
+            .MathJax_MenuArrow.RTL {
+                left: .5em;
+                right: auto
+            }
+            .MathJax_MenuCheck {
+                position: absolute;
+                left: .7em
+            }
+            .MathJax_MenuCheck.RTL {
+                right: .7em;
+                left: auto
+            }
+            .MathJax_MenuRadioCheck {
+                position: absolute;
+                left: 1em
+            }
+            .MathJax_MenuRadioCheck.RTL {
+                right: 1em;
+                left: auto
+            }
+            .MathJax_MenuLabel {
+                padding: 2px 2em 4px 1.33em;
+                font-style: italic
+            }
+            .MathJax_MenuRule {
+                border-top: 1px solid #CCCCCC;
+                margin: 4px 1px 0px
+            }
+            .MathJax_MenuDisabled {
+                color: GrayText
+            }
+            .MathJax_MenuActive {
+                background-color: Highlight;
+                color: HighlightText
+            }
+            .MathJax_Menu_Close {
+                position: absolute;
+                width: 31px;
+                height: 31px;
+                top: -15px;
+                left: -15px
+            }
+        </style>
+        <style type="text/css">
+            .MathJax_Preview .MJXc-math {
+                color: inherit!important
+            }
+        </style>
+        <style type="text/css">
+            #MathJax_Zoom {
+                position: absolute;
+                background-color: #F0F0F0;
+                overflow: auto;
+                display: block;
+                z-index: 301;
+                padding: .5em;
+                border: 1px solid black;
+                margin: 0;
+                font-weight: normal;
+                font-style: normal;
+                text-align: left;
+                text-indent: 0;
+                text-transform: none;
+                line-height: normal;
+                letter-spacing: normal;
+                word-spacing: normal;
+                word-wrap: normal;
+                white-space: nowrap;
+                float: none;
+                box-shadow: 5px 5px 15px #AAAAAA;
+                -webkit-box-shadow: 5px 5px 15px #AAAAAA;
+                -moz-box-shadow: 5px 5px 15px #AAAAAA;
+                -khtml-box-shadow: 5px 5px 15px #AAAAAA;
+                filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')
+            }
+            #MathJax_ZoomOverlay {
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 300;
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                border: 0;
+                padding: 0;
+                margin: 0;
+                background-color: white;
+                opacity: 0;
+                filter: alpha(opacity=0)
+            }
+            #MathJax_ZoomFrame {
+                position: relative;
+                display: inline-block;
+                height: 0;
+                width: 0
+            }
+            #MathJax_ZoomEventTrap {
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 302;
+                display: inline-block;
+                border: 0;
+                padding: 0;
+                margin: 0;
+                background-color: white;
+                opacity: 0;
+                filter: alpha(opacity=0)
+            }
+        </style>
+        <style type="text/css">
+            .MathJax_Preview {
+                color: #888
+            }
+            #MathJax_Message {
+                position: fixed;
+                left: 1em;
+                bottom: 1.5em;
+                background-color: #E6E6E6;
+                border: 1px solid #959595;
+                margin: 0px;
+                padding: 2px 8px;
+                z-index: 102;
+                color: black;
+                font-size: 80%;
+                width: auto;
+                white-space: nowrap
+            }
+            #MathJax_MSIE_Frame {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0px;
+                z-index: 101;
+                border: 0px;
+                margin: 0px;
+                padding: 0px
+            }
+            .MathJax_Error {
+                color: #CC0000;
+                font-style: italic
+            }
+        </style>
+        <style type="text/css">
+            .MJXc-script {
+                font-size: .8em
+            }
+            .MJXc-right {
+                -webkit-transform-origin: right;
+                -moz-transform-origin: right;
+                -ms-transform-origin: right;
+                -o-transform-origin: right;
+                transform-origin: right
+            }
+            .MJXc-bold {
+                font-weight: bold
+            }
+            .MJXc-italic {
+                font-style: italic
+            }
+            .MJXc-scr {
+                font-family: MathJax_Script, 'Times New Roman', Times, STIXGeneral, serif
+            }
+            .MJXc-frak {
+                font-family: MathJax_Fraktur, 'Times New Roman', Times, STIXGeneral, serif
+            }
+            .MJXc-sf {
+                font-family: MathJax_SansSerif, 'Times New Roman', Times, STIXGeneral, serif
+            }
+            .MJXc-cal {
+                font-family: MathJax_Caligraphic, 'Times New Roman', Times, STIXGeneral, serif
+            }
+            .MJXc-mono {
+                font-family: MathJax_Typewriter, 'Times New Roman', Times, STIXGeneral, serif
+            }
+            .MJXc-largeop {
+                font-size: 150%
+            }
+            .MJXc-largeop.MJXc-int {
+                vertical-align: -.2em
+            }
+            .MJXc-math {
+                display: inline-block;
+                line-height: 1.2;
+                text-indent: 0;
+                font-family:'Times New Roman', Times, STIXGeneral, serif;
+                white-space: nowrap;
+                border-collapse: collapse
+            }
+            .MJXc-display {
+                display: block;
+                text-align: center;
+                margin: 1em 0
+            }
+            .MJXc-math span {
+                display: inline-block
+            }
+            .MJXc-box {
+                display: block!important;
+                text-align: center
+            }
+            .MJXc-box:after {
+                content:" "
+            }
+            .MJXc-rule {
+                display: block!important;
+                margin-top: .1em
+            }
+            .MJXc-char {
+                display: block!important
+            }
+            .MJXc-mo {
+                margin: 0 .15em
+            }
+            .MJXc-mfrac {
+                margin: 0 .125em;
+                vertical-align: .25em
+            }
+            .MJXc-denom {
+                display: inline-table!important;
+                width: 100%
+            }
+            .MJXc-denom > * {
+                display: table-row!important
+            }
+            .MJXc-surd {
+                vertical-align: top
+            }
+            .MJXc-surd > * {
+                display: block!important
+            }
+            .MJXc-script-box > * {
+                display: table!important;
+                height: 50%
+            }
+            .MJXc-script-box > * > * {
+                display: table-cell!important;
+                vertical-align: top
+            }
+            .MJXc-script-box > *:last-child > * {
+                vertical-align: bottom
+            }
+            .MJXc-script-box > * > * > * {
+                display: block!important
+            }
+            .MJXc-mphantom {
+                visibility: hidden
+            }
+            .MJXc-munderover {
+                display: inline-table!important
+            }
+            .MJXc-over {
+                display: inline-block!important;
+                text-align: center
+            }
+            .MJXc-over > * {
+                display: block!important
+            }
+            .MJXc-munderover > * {
+                display: table-row!important
+            }
+            .MJXc-mtable {
+                vertical-align: .25em;
+                margin: 0 .125em
+            }
+            .MJXc-mtable > * {
+                display: inline-table!important;
+                vertical-align: middle
+            }
+            .MJXc-mtr {
+                display: table-row!important
+            }
+            .MJXc-mtd {
+                display: table-cell!important;
+                text-align: center;
+                padding: .5em 0 0 .5em
+            }
+            .MJXc-mtr > .MJXc-mtd:first-child {
+                padding-left: 0
+            }
+            .MJXc-mtr:first-child > .MJXc-mtd {
+                padding-top: 0
+            }
+            .MJXc-mlabeledtr {
+                display: table-row!important
+            }
+            .MJXc-mlabeledtr > .MJXc-mtd:first-child {
+                padding-left: 0
+            }
+            .MJXc-mlabeledtr:first-child > .MJXc-mtd {
+                padding-top: 0
+            }
+            .MJXc-merror {
+                background-color: #FFFF88;
+                color: #CC0000;
+                border: 1px solid #CC0000;
+                padding: 1px 3px;
+                font-style: normal;
+                font-size: 90%
+            }
+            .MJXc-scale0 {
+                -webkit-transform: scaleX(.0);
+                -moz-transform: scaleX(.0);
+                -ms-transform: scaleX(.0);
+                -o-transform: scaleX(.0);
+                transform: scaleX(.0)
+            }
+            .MJXc-scale1 {
+                -webkit-transform: scaleX(.1);
+                -moz-transform: scaleX(.1);
+                -ms-transform: scaleX(.1);
+                -o-transform: scaleX(.1);
+                transform: scaleX(.1)
+            }
+            .MJXc-scale2 {
+                -webkit-transform: scaleX(.2);
+                -moz-transform: scaleX(.2);
+                -ms-transform: scaleX(.2);
+                -o-transform: scaleX(.2);
+                transform: scaleX(.2)
+            }
+            .MJXc-scale3 {
+                -webkit-transform: scaleX(.3);
+                -moz-transform: scaleX(.3);
+                -ms-transform: scaleX(.3);
+                -o-transform: scaleX(.3);
+                transform: scaleX(.3)
+            }
+            .MJXc-scale4 {
+                -webkit-transform: scaleX(.4);
+                -moz-transform: scaleX(.4);
+                -ms-transform: scaleX(.4);
+                -o-transform: scaleX(.4);
+                transform: scaleX(.4)
+            }
+            .MJXc-scale5 {
+                -webkit-transform: scaleX(.5);
+                -moz-transform: scaleX(.5);
+                -ms-transform: scaleX(.5);
+                -o-transform: scaleX(.5);
+                transform: scaleX(.5)
+            }
+            .MJXc-scale6 {
+                -webkit-transform: scaleX(.6);
+                -moz-transform: scaleX(.6);
+                -ms-transform: scaleX(.6);
+                -o-transform: scaleX(.6);
+                transform: scaleX(.6)
+            }
+            .MJXc-scale7 {
+                -webkit-transform: scaleX(.7);
+                -moz-transform: scaleX(.7);
+                -ms-transform: scaleX(.7);
+                -o-transform: scaleX(.7);
+                transform: scaleX(.7)
+            }
+            .MJXc-scale8 {
+                -webkit-transform: scaleX(.8);
+                -moz-transform: scaleX(.8);
+                -ms-transform: scaleX(.8);
+                -o-transform: scaleX(.8);
+                transform: scaleX(.8)
+            }
+            .MJXc-scale9 {
+                -webkit-transform: scaleX(.9);
+                -moz-transform: scaleX(.9);
+                -ms-transform: scaleX(.9);
+                -o-transform: scaleX(.9);
+                transform: scaleX(.9)
+            }
+            .MathJax_CHTML .noError {
+                vertical-align:;
+                font-size: 90%;
+                text-align: left;
+                color: black;
+                padding: 1px 3px;
+                border: 1px solid
+            }
+        </style>
+    </head>
+<body><div class="container"><h1 id="zalo-traffic-control-ztc">Zalo Traffic Control (ZTC)</h1>
 
-    <p>
-    Because <strong>{{ site.data.config.project_name }}</strong> runs on a gateway, any devices that are connected to a network routing through it, can use it to shape its traffic. Traffic can be shaped/unshaped using a web interface allowing any devices that have a web browser to use ATC without the need for a client application.
-    </p>
-
-    <p>
-    <div class="section_title">Requirements</div>
-    </p>
-
-    <p>
-    <strong>{{ site.data.config.project_name }}</strong> uses <a href="http://en.wikipedia.org/wiki/Iptables"><code>iptables</code></a> and
-    <a href="http://tldp.org/HOWTO/Traffic-Control-HOWTO/intro.html"><code>tc</code></a> internally, so it is only supported on
-    <strong>linux platforms</strong>.
-    </p>
-
-    <p>
-    <strong>{{ site.data.config.project_name }}</strong> was developed with <strong>python 2.7</strong>. Python 3 is not supported.
-    </p>
-
-    <p>
-    <div class="section_title">Architecture</div>
-    <div class="section_subtitle">Overview</div>
-    <p>
-    <code>{{ site.data.config.project_fullname }}</code> is made of a set of applications that inter-operate together. At the core of it is <a href="{{ site.data.config.project_github }}/tree/master/atc/atcd">atcd</a>, the ATC daemon, that is responsible for setting shaping characteristics.
-<em>atcd</em> provides a <a href="https://thrift.apache.org/" target="_blank">Thrift</a> interface in order to interact with it.
-    </p>
-    <p>
-    A django REST API, <a href="{{ site.data.config.project_github }}/tree/master/atc/django-atc-api">django-atc-api</a>, is also provided in order to make it easier to build web applications that can interact with <em>atcd</em> using the well known REST paradigm.
-    </p>
-    <p>
-    To get people started, a simple Web UI is provided: <a href="{{ site.data.config.project_github }}/tree/master/atc/django-atc-demo-ui">django-atc-demo-ui</a>.
-    </p>
-    <img src="{{ site.baseurl }}/images/atc_overview.png" />
-
-    <div class="section_title">Contributions</div>
-    <p>Use <a href="{{ site.data.config.project_github }}/issues">Github issues</a> for requests.</p>
-    <p>We actively welcome pull requests; learn how to <a href="{{ site.data.config.project_github }}/blob/master/CONTRIBUTING.md">contribute</a>.</p>
-
-    <div class="section_title">Changelog</div>
-    <p>Changes are tracked as <a href="{{ site.data.config.project_github }}/releases">Github releases</a>.</p>
+<p>Base on <a href="https://github.com/facebook/augmented-traffic-control">Augmented Traffic Control</a> of facebook</p>
 
 
-    <div class="section_title">License</div>
-    <p><code>{{ site.data.config.project_fullname }}</code> is <a href="{{ site.data.config.project_github }}/blob/master/LICENSE">{{ site.data.config.project_license }}-licensed</a>. We also provide an additional <a href="{{ site.data.config.project_github }}/blob/master/PATENTS">patent grant</a>.</p>
 
-  </div>
-{% include footer.html %}
+<h2 id="overview">Overview</h2>
+
+<hr>
+
+<p><code>ZTC</code> is a tools to simulate network conditions. It allows controlling the connection that a device has to the internet. Developers can use <code>ZTC</code> to test their application across varying network conditions, easily emulating high speed, mobile, and even severely impaired networks. Aspects of the connection that can be controlled include:</p>
+
+<ul>
+<li>bandwidth</li>
+<li>latency</li>
+<li>packet loss</li>
+<li>corrupted packets</li>
+<li>packets ordering</li>
+</ul>
+
+<p>In order to be able to shape the network traffic, ZTC must be running on a device that routes the traffic and sees the real IP address of the device, like your network gateway for instance.</p>
+
+
+
+<h2 id="feature">Feature</h2>
+
+<hr>
+
+<p>Simulate many network conditions:</p>
+
+<ul>
+<li>simulate the network condition for whole traffic from device</li>
+<li>simulate the network condition for the flow from device</li>
+<li>simulate many network condition for each flow from device</li>
+</ul>
+
+<p>Web ui support:</p>
+
+<ul>
+<li>select, add, update, delete profile (a network condition)</li>
+<li>remote to shape the network traffic on specified device</li>
+</ul>
+
+
+
+<h2 id="usage">Usage</h2>
+
+<hr>
+
+
+
+<h4 id="1-how-to-use-ztc-or-select-profile-to-shape-the-traffic"><em>1. How to use ZTC ? or select profile to shape the traffic ?</em></h4>
+
+<p><em>Step 1</em> : connect to</p>
+
+<table>
+<thead>
+<tr>
+  <th align="right">AP</th>
+  <th align="left"><code>ZaloTraffic</code></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="right"><strong>Pass</strong></td>
+  <td align="left"><code>1234678</code></td>
+</tr>
+</tbody></table>
+
+
+<p><em>Step 2</em> : open your device browser at <a href="http://192.168.12.1:8000">http://192.168.12.1:8000</a></p>
+
+<p><em>Step 3</em> : Select specified profile to simulate network conditions</p>
+
+<ul>
+<li><code>2G - Developing Rural</code></li>
+<li><code>2G - Developing Urban</code></li>
+<li><code>3G - Average</code></li>
+<li><code>3G - Good</code></li>
+<li><code>Cable</code></li>
+<li><code>DSL</code></li>
+<li><code>Edge - Average</code></li>
+<li><code>Edge - Good</code></li>
+<li><code>Edge - Lossy</code></li>
+<li><code>No Connectivity</code></li>
+<li><code>Zalo selection</code></li>
+</ul>
+
+
+
+<h4 id="2-how-to-add-a-profile"><em>2. How to add a profile ?</em></h4>
+
+<p><em>Step 1</em> : connect to:</p>
+
+<table>
+<thead>
+<tr>
+  <th align="right">AP</th>
+  <th align="left"><code>ZaloTraffic</code></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="right"><strong>Pass</strong></td>
+  <td align="left"><code>1234678</code></td>
+</tr>
+</tbody></table>
+
+
+<p><em>Step 2</em> : open your device browser at <a href="&quot;http://192.168.12.1:8000/api/v1/profiles/&lt;new_id">/”&gt;<code>http://192.168.12.1:8000/api/v1/profiles/&lt;new_id&gt;/</code></a></p>
+
+<p><em>Step 3</em> : modified json</p>
+
+<p><em>Step 4</em> : <code>post</code> json to add <code>&lt;new_id&gt;</code> profile</p>
+
+
+
+<h4 id="3-how-to-list-all-profiles"><em>3. How to list all profiles ?</em></h4>
+
+<p><em>Step 1</em> : connect to:</p>
+
+<table>
+<thead>
+<tr>
+  <th align="right">AP</th>
+  <th align="left"><code>ZaloTraffic</code></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="right"><strong>Pass</strong></td>
+  <td align="left"><code>1234678</code></td>
+</tr>
+</tbody></table>
+
+
+<p><em>Step 2</em> : open your device browser at <a href="http://192.168.12.1:8000/api/v1/profiles/"><code>http://192.168.12.1:8000/api/v1/profiles/</code></a></p>
+
+<p><em>Step 3</em> : modified json</p>
+
+<p><em>Step 4</em> : <code>post</code> json to update <em>all</em> profiles</p>
+
+
+
+<h4 id="4-how-to-update-delete-profile"><em>4. How to update, delete profile ?</em></h4>
+
+<p><em>Step 1</em> : connect to:</p>
+
+<table>
+<thead>
+<tr>
+  <th align="right">AP</th>
+  <th align="left"><code>ZaloTraffic</code></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="right"><strong>Pass</strong></td>
+  <td align="left"><code>1234678</code></td>
+</tr>
+</tbody></table>
+
+
+<p><em>Step 2</em> : open your mobile browser at <a href="&quot;http://192.168.12.1:8000/api/v1/profiles/&lt;exist_id">/”&gt;<code>http://192.168.12.1:8000/api/v1/profiles/&lt;exist_id&gt;/</code></a></p>
+
+<p><em>Step 3</em> : modified json</p>
+
+<p><em>Step 4</em>: <code>post</code> json to update <code>&lt;exist_id&gt;</code> profile</p>
+
+
+
+<h4 id="5-how-to-remote-to-shape-traffic-from-the-device"><em>5. How to remote to shape traffic from the device?</em></h4>
+
+<p><em>Step 1</em> : connect to:</p>
+
+<table>
+<thead>
+<tr>
+  <th align="right">AP</th>
+  <th align="left"><code>ZaloTraffic</code></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="right"><strong>Pass</strong></td>
+  <td align="left"><code>1234678</code></td>
+</tr>
+</tbody></table>
+
+
+<p><em>Step 2</em> : open your mobile browser at <a href="&quot;http://192.168.12.1:8000/api/v1/shape/&lt;device_ip">/”&gt;<code>http://192.168.12.1:8000/api/v1/shape/&lt;device_ip&gt;/</code></a></p>
+
+<p><em>Step 3</em> : modified json</p>
+
+<p><em>Step 4</em>: <code>post</code> json to shape the device traffic</p></div></body>
+</html>
